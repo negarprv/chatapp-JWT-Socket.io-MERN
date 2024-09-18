@@ -12,6 +12,7 @@ const Message = ({ message }) => {
     : selectedConversation?.profilePic;
   const bubbleBgColor = formMe ? " bg-orange-500" : "bg-gray-700";
   const formattedTime = extractTime(message.createdAt);
+  const shakeClass = message.shouldShake ? "shake" : "";
 
   return (
     <div className={` chat ${chatClassName} max-w-sm`}>
@@ -22,7 +23,7 @@ const Message = ({ message }) => {
       </div>
 
       <div
-        className={`chat-bubble text-white pb-2 ${bubbleBgColor}  break-words `}
+        className={`chat-bubble text-white pb-2 ${bubbleBgColor} ${shakeClass}  break-words `}
       >
         {message.message}
       </div>
