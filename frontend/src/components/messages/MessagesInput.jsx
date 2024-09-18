@@ -3,11 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 import { BsSend } from "react-icons/bs";
 import useSendMessage from "../../hooks/useSendMessage";
+import useConversation from "../../zustand/useConversation";
 
 const MessagesInput = () => {
   const [message, setMessage] = useState("");
   const { loading, sendMessage } = useSendMessage();
   const textareaRef = useRef(null);
+  const { selectedConversation } = useConversation();
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [selectedConversation]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,6 +23,10 @@ const MessagesInput = () => {
     await sendMessage(message);
     setMessage("");
     adjustTextareaHeight();
+
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
   };
 
   const handleInputChange = (e) => {

@@ -3,10 +3,25 @@ import useGetMessages from "../../hooks/useGetMessages";
 import MessageSkeleton from "../skeletons/MessageSkeleton";
 import Message from "./Message";
 import useListenMessages from "../../hooks/useListenMessages";
+import useConversation from "../../zustand/useConversation";
 
 const Messages = () => {
   const { messages, loading } = useGetMessages();
   useListenMessages();
+  const { notification, setNotification, selectedConversation } =
+    useConversation();
+
+  useEffect(() => {
+    if (selectedConversation) {
+      const filteredNotifications = notification.filter(
+        (notif) => notif.senderId !== selectedConversation._id
+      );
+      console.log(filteredNotifications, "filterdNotif");
+      if (filteredNotifications.length !== notification.length) {
+        setNotification(filteredNotifications);
+      }
+    }
+  }, [selectedConversation, notification, setNotification]);
 
   const lastMessageRef = useRef();
   useEffect(() => {

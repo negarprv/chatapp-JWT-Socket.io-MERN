@@ -3,10 +3,11 @@ import useConversation from "../../zustand/useConversation";
 
 const Conversation = ({ conversation, lastIndex, emoji }) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
-  const isSelected = selectedConversation?._id === conversation._id;
-
   const { onlineUsers } = useSocketContext();
+
+  const isSelected = selectedConversation?._id === conversation._id;
   const isOnline = onlineUsers.includes(conversation._id);
+  const isNotification = conversation.notificationCount > 0;
 
   return (
     <>
@@ -24,7 +25,18 @@ const Conversation = ({ conversation, lastIndex, emoji }) => {
 
         <div className=" flex flex-col flex-1">
           <div className=" flex gap-3 justify-between">
-            <p className=" font-bold text-gray-200">{conversation.fullName}</p>
+            <div className=" flex items-center gap-2">
+              <p className=" font-bold text-gray-200">
+                {conversation.fullName}
+              </p>
+
+              {isNotification && (
+                <div className=" badge badge-sm  badge-success text-white">
+                  {conversation.notificationCount}
+                </div>
+              )}
+            </div>
+
             <span className=" text-xl">{emoji}</span>
           </div>
         </div>
